@@ -7,9 +7,10 @@ var webserver = require('webserver')
   , server = webserver.create()
   ;
 
+var LISTEN_PORT = env.LISTEN_PORT || 80;
 
 
-var service = server.listen(env.LISTEN_PORT, function(request, response) {
+var service = server.listen(LISTEN_PORT, function(request, response) {
 
   function dieGracefully(err) {
     response.statusCode = 400;
@@ -19,11 +20,11 @@ var service = server.listen(env.LISTEN_PORT, function(request, response) {
     response.closeGracefully();
   }
 
-
   console.log('Got request: ' + request.method + ': ' + request.url);
   console.log(JSON.stringify(request.headers));
 
-  var path = request.url.slice(0,index)
+  var index = request.url.indexOf('?')
+    , path = request.url.slice(0,index)
     , querystring = request.url.slice(index)
     ;
 
@@ -36,12 +37,11 @@ var service = server.listen(env.LISTEN_PORT, function(request, response) {
 
   if (path === '/healthcheck') {
     response.statusCode = 200;
-    response.write("OK");
+    response.write("OK (hostname: " + env.HOSTNAME + ")");
     response.close();
     return;    
   }
 
-  var index = request.url.indexOf('?');
   if (index === -1) {
     return dieGracefully("Missing query params");
   }
@@ -112,13 +112,9 @@ var service = server.listen(env.LISTEN_PORT, function(request, response) {
 
     }, delay);
 
-
-
   });
-
-
 
 });
 
 
-console.log('Listening on port: ' + env.LISTEN_PORT);
+console.log('Listening on port: ' + LISTEN_PORT);

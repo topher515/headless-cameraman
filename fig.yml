@@ -7,15 +7,51 @@ haproxy:
   - "8080:8080"
   - "8081:8081"
   links:
-  - headless
+  - headless1
+  - headless2
+  - headless3
+  - headless4
+  - headless5
+  command: "/usr/local/sbin/haproxy -V -f /usr/local/etc/haproxy/haproxy.cfg"
 
-headless:
-  image: cmfatih/phantomjs:1.9.7
+
+
+headless1:
+  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
   volumes:
   - "./serve.js:/opt/serve.js:ro"
   ports:
-  environment:
-    LISTEN_PORT: 5333
+  - "80"
+  command: "/usr/bin/phantomjs /opt/serve.js"
+
+headless2:
+  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
+  volumes:
+  - "./serve.js:/opt/serve.js:ro"
   ports:
-  - "5333"
+  - "80"
+  command: "/usr/bin/phantomjs /opt/serve.js"
+
+headless3:
+  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
+  volumes:
+  - "./serve.js:/opt/serve.js:ro"
+  ports:
+  - "80"
+  command: "/usr/bin/phantomjs /opt/serve.js"
+
+headless4:
+  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
+  volumes:
+  - "./serve.js:/opt/serve.js:ro"
+  ports:
+  - "80"
+  command: "/usr/bin/phantomjs /opt/serve.js"
+
+headless5:
+  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
+  volumes:
+  - "./serve.js:/opt/serve.js:ro"
+  ports:
+  - "80"
   command: "/usr/bin/phantomjs /opt/serve.js"
