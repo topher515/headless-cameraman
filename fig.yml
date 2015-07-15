@@ -1,0 +1,21 @@
+
+haproxy:
+  image: haproxy:1.5.14
+  volumes:
+  - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+  ports:
+  - "8080:8080"
+  - "8081:8081"
+  links:
+  - headless
+
+headless:
+  image: cmfatih/phantomjs:1.9.7
+  volumes:
+  - "./serve.js:/opt/serve.js:ro"
+  ports:
+  environment:
+    LISTEN_PORT: 5333
+  ports:
+  - "5333"
+  command: "/usr/bin/phantomjs /opt/serve.js"

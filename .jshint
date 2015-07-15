@@ -1,0 +1,11 @@
+{
+  "undef": true,
+  "unused": true,
+  "laxcomma":true,
+  "curly":true,
+  "bitwise":true,
+  "predef": [
+
+  	"window"
+  ]
+}
