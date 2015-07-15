@@ -9,9 +9,6 @@ var webserver = require('webserver')
 
 
 
-
-
-
 var service = server.listen(env.LISTEN_PORT, function(request, response) {
 
   function dieGracefully(err) {
