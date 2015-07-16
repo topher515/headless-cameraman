@@ -24,9 +24,19 @@ var service = server.listen(LISTEN_PORT, function(request, response) {
   console.log(JSON.stringify(request.headers));
 
   var index = request.url.indexOf('?')
-    , path = request.url.slice(0,index)
-    , querystring = request.url.slice(index)
+    , path, querystring
     ;
+
+  if (index === -1) {
+    path = request.url;
+    querystring = "";
+
+  } else {
+    path = request.url.slice(0,index);
+    querystring = request.url.slice(index);
+
+  }
+
 
   if (request.method !== 'GET') {
     response.statusCode = 403;
