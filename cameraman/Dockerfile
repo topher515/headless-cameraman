@@ -13,4 +13,4 @@ RUN pip install Flask==0.10.1 watchdog==0.8.2 CherryPy==3.8.0
 ADD render.js /opt/render.js
 ADD serve.py /opt/serve.py
 
-CMD python /opt/serve.py
+CMD /usr/bin/python /opt/serve.py
