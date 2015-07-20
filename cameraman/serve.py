@@ -22,7 +22,7 @@ def screenshot():
 
     environ = { 
         'URL': unquote(request.args['url']),
-        # request.args['size']
+        'SIZE': request.args.get('size','screen'),
         'DELAY': str(int(request.args.get('delay', 0)) * 1000),
         'SCREEN_WIDTH': str(int(request.args.get('screen_width', 915))),
         'SCREEN_HEIGHT': str(int(request.args.get('screen_height', 580))),

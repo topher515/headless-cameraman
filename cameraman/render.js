@@ -14,7 +14,7 @@ function getOrFail(name) {
 
 
 var shotUrl = getOrFail('URL') // url of page to screenshot
-//, size = getOrFail('size') // screen or page
+  , size = getOrFail('SIZE') // screen or page
   , delay = parseInt(getOrFail('DELAY')) // param is milliseconds
   , screenWidth = parseInt(getOrFail('SCREEN_WIDTH'))   // default 915
   , screenHeight = parseInt(getOrFail('SCREEN_HEIGHT'))  // default 580
@@ -28,7 +28,10 @@ page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) ' +
                           'Chrome/43.0.2357.132 Safari/537.36';
 
 page.viewportSize = { width: screenWidth, height: screenHeight };
-// page.clipRect = { top: 0, left: 0, width: screenWidth, height: screenHeight };
+if (size !== 'page') {
+  // Default to just rendering 'screen' unless 'page' is specified
+  page.clipRect = { top: 0, left: 0, width: screenWidth, height: screenHeight };
+}
 
 console.log('Opening: ' + shotUrl);
 
