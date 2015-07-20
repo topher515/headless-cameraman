@@ -1,57 +1,31 @@
 
-haproxy:
-  image: haproxy:1.5.14
-  volumes:
-  - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
+loadbalancer:
+  # image: topher515/headless-loadbalancer
+  build: loadbalancer
   ports:
   - "8080:8080"
   - "8081:8081"
   links:
-  - headless1
-  - headless2
-  - headless3
-  - headless4
-  - headless5
+  - cameraman1
+  - cameraman2
+  - cameraman3
+  - cameraman4
   command: "/usr/local/sbin/haproxy -V -f /usr/local/etc/haproxy/haproxy.cfg"
 
 
+cameraman1: 
+  # image: topher515/headless-cameraman
+  build: cameraman
+  command: "python /opt/serve.py"
 
-headless1:
-  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
-  volumes:
-  - "./serve.js:/opt/serve.js:ro"
-  ports:
-  - "80"
-  command: "/usr/bin/phantomjs /opt/serve.js"
+cameraman2: 
+  build: cameraman
+  command: "python /opt/serve.py"
 
-headless2:
-  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
-  volumes:
-  - "./serve.js:/opt/serve.js:ro"
-  ports:
-  - "80"
-  command: "/usr/bin/phantomjs /opt/serve.js"
+cameraman3: 
+  build: cameraman
+  command: "python /opt/serve.py"
 
-headless3:
-  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
-  volumes:
-  - "./serve.js:/opt/serve.js:ro"
-  ports:
-  - "80"
-  command: "/usr/bin/phantomjs /opt/serve.js"
-
-headless4:
-  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
-  volumes:
-  - "./serve.js:/opt/serve.js:ro"
-  ports:
-  - "80"
-  command: "/usr/bin/phantomjs /opt/serve.js"
-
-headless5:
-  image: cmfatih/phantomjs:1.9.7 # topher515/headless-cameraman
-  volumes:
-  - "./serve.js:/opt/serve.js:ro"
-  ports:
-  - "80"
-  command: "/usr/bin/phantomjs /opt/serve.js"
+cameraman4: 
+  build: cameraman
+  command: "python /opt/serve.py"
