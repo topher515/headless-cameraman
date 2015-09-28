@@ -5,7 +5,7 @@ from urlparse import urlparse
 from urllib import unquote
 
 from cherrypy import wsgiserver
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, abort
 app = Flask(__name__)
 
 DEBUG_MODE = os.environ.get('DEBUG') in ('True','1')
@@ -13,12 +13,33 @@ PHANTOMJS_BIN = os.environ.get('PHANTOMJS_BIN', '/usr/bin/phantomjs')
 PHANTOMJS_SCRIPT = os.environ.get('PHANTOMJS_SCRIPT', '/opt/render.js')
 SCREENSHOT_FILE_PATH = '/tmp/rendered-page-image'
 
+
+
+WITH_API_KEY_CHECK = os.environ.get('API_KEY_CHECK')
+if WITH_API_KEY_CHECK == 'redis':
+    import redis
+    redis_conn = redis.StrictRedis(host=os.environ['REDIS_HOST'], 
+                            port=int(os.environ.get('REDIS_PORT',6379)), 
+                            db=int(os.environ.get('REDIS_DB',0)))
+
+
+def is_valid_api_key(apikey):
+    if not WITH_API_KEY_CHECK == 'redis':
+        return True
+    if not apikey:
+        return False
+    return redis_conn.get(apikey) is not None
+
+
 @app.route("/healthcheck", methods=['GET'])
 def healthcheck():
     return "OK (hostname: %s)" % os.environ.get('HOSTNAME')
 
 @app.route("/screenshot", methods=['GET'])
 def screenshot():
+
+    if not is_valid_api_key(request.GET('key')):
+        abort(400)
 
     environ = { 
         'URL': unquote(request.args['url']),
