@@ -38,12 +38,12 @@ def healthcheck():
 @app.route("/screenshot", methods=['GET'])
 def screenshot():
 
-    if not is_valid_api_key(request.GET('key')):
+    if not is_valid_api_key(request.args.get('key')):
         abort(400)
 
     environ = { 
         'URL': unquote(request.args['url']),
-        'SIZE': request.args.get('size','screen'),
+        'SIZE': request.args.get('size','page'),
         'DELAY': str(int(request.args.get('delay', 0)) * 1000),
         'SCREEN_WIDTH': str(int(request.args.get('screen_width', 915))),
         'SCREEN_HEIGHT': str(int(request.args.get('screen_height', 580))),
