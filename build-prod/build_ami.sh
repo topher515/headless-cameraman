@@ -1,1 +1,0 @@
-packer build -var-file=../secrets.json template.json

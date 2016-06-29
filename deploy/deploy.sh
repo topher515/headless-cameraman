@@ -1,1 +1,0 @@
-ansible-playbook -i production-hosts roles/cameraman-servers.yml
