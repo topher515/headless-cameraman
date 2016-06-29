@@ -1,0 +1,19 @@
+[
+  {
+    // App1
+    "uid": "camera1",
+    "append": true,
+    "watch": true,
+    "script": "index.js",
+    "sourceDir": "/opt/headless-cameraman"
+  },
+  // {
+  //   // App2
+  //   "uid": "camera2",
+  //   "append": true,
+  //   "watch": true,
+  //   "script": "index.js",
+  //   "sourceDir": "/home/myuser/app2",
+  //   "args": ["--port", "8081"]
+  // }
+]

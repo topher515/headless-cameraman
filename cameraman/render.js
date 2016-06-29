@@ -1,25 +1,25 @@
-var webpage = require('webpage')
-  , system = require('system')
-  , env = system.env
-  ;
+// PHANTOM JS SCRIPT
 
+var webpage = require('webpage');
+var system = require('system');
+var env = system.env;
 
-function getOrFail(name) {
-  if (!env[name]) {
-    console.log('Missing env variable: ' + name);
-    phantom.exit(2);
-  }
-  return env[name];
+var args = system.args;
+
+console.log('Called with args', args);
+
+if (args.length !== 8) {
+  console.log('Missing arguments');
+  phantom.exit(2);
 }
 
-
-var shotUrl = getOrFail('URL') // url of page to screenshot
-  , size = getOrFail('SIZE') // screen or page
-  , delay = parseInt(getOrFail('DELAY')) // param is milliseconds
-  , screenWidth = parseInt(getOrFail('SCREEN_WIDTH'))   // default 915
-  , screenHeight = parseInt(getOrFail('SCREEN_HEIGHT'))  // default 580
-  , width = parseInt(getOrFail('WIDTH')) // 600
-  , filepath = getOrFail('SCREENSHOT_FILE_PATH')
+var shotUrl = args[1] // url of page to screenshot
+  , size = args[2] // screen or page
+  , delay = args[3] // param is milliseconds
+  , screenWidth = args[4]   // default 915
+  , screenHeight = args[5]  // default 580
+  , width = args[6] // 600
+  , filepath = args[7]
   ;
 
 var page = webpage.create();
@@ -36,12 +36,12 @@ if (size !== 'page') {
 console.log('Opening: ' + shotUrl);
 
 page.onError = function (msg, trace) {
-    console.log(msg);
-    trace.forEach(function(item) {
-        console.log('  ', item.file, ':', item.line);
-    });
-};
 
+  console.error('On Page Error: ', msg);
+  trace.forEach(function(item) {
+      console.error('  ', item.file, ':', item.line);
+  });
+};
 
 page.open(shotUrl, function(status) {
 
