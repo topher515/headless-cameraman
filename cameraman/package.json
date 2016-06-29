@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
+    "minimist": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.7"
   },
   "devDependencies": {

@@ -1,16 +1,21 @@
 var spawnSync = require('child_process').spawnSync;
 var express = require('express');
-var app = express();
 var fs = require('fs');
 var rmdir = require('fs');
 var path = require('path');
 
+var argv = require('minimist')(process.argv.slice(2));
+
+var app = express();
 
 var DEBUG_MODE = !!process.env.DEBUG;
 var PHANTOMJS_BIN = process.env.PHANTOMJS_BIN || 'node_modules/phantomjs-prebuilt/bin/phantomjs';
 var PHANTOMJS_SCRIPT = process.env.PHANTOMJS_SCRIPT || 'render.js';
 
 var SCREENSHOT_SHARE_DIR = '/tmp/headless-cameraman/'
+
+
+var PORT = argv.port || 3000;
 
 
 var makeRandomStr = function(strLength) {
@@ -118,6 +123,6 @@ app.get('/screenshot', function(req, res) {
 // fs.mkdir(SCREENSHOT_SHARE_DIR);
 
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(PORT, function () {
+  console.log('Cameraman service listening on port ' + PORT);
 });
