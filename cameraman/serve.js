@@ -72,7 +72,7 @@ app.get('/api/browshot_v1/simple', function(req, res) {
 
 
 
-  var procOut = spawnSync(PHANTOMJS_BIN, args, { timeout: 15000 })
+  var procOut = spawnSync(PHANTOMJS_BIN, args, { timeout: 25000 })
 
 
   var stdout = (procOut.output || []).map(function(b) { return b ? b.toString() : null; });
