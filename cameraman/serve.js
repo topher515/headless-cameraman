@@ -10,6 +10,7 @@ var app = express();
 
 var DEBUG_MODE = !!process.env.DEBUG;
 var PHANTOMJS_BIN = process.env.PHANTOMJS_BIN || 'node_modules/phantomjs-prebuilt/bin/phantomjs';
+// var PHANTOMJS_BIN = process.env.PHANTOMJS_BIN || 'node_modules/phantomjs-webfonts/bin/phantomjs';
 var PHANTOMJS_SCRIPT = process.env.PHANTOMJS_SCRIPT || 'render.js';
 
 var SCREENSHOT_SHARE_DIR = '/tmp/headless-cameraman/'
@@ -33,7 +34,8 @@ app.get("/healthcheck", function(req, res) {
   res.send('OK (hostname: ' + process.env.HOSTNAME + ')');
 });
 
-app.get('/screenshot', function(req, res) {
+
+app.get('/api/browshot_v1/simple', function(req, res) {
 
  // environ = { 
  //        'URL': unquote(request.args['url']),
@@ -46,6 +48,8 @@ app.get('/screenshot', function(req, res) {
  //    }
 
   var screenshotFilePath = path.join(SCREENSHOT_SHARE_DIR, makeRandomStr(10) + '.png');
+
+  console.log('Screenshot request! Query args: ', req.query);
 
   var args = [
     // SCRIPT
@@ -71,7 +75,7 @@ app.get('/screenshot', function(req, res) {
   var procOut = spawnSync(PHANTOMJS_BIN, args, { timeout: 15000 })
 
 
-  var stdout = procOut.output.map(function(b) { return b ? b.toString() : null; });
+  var stdout = (procOut.output || []).map(function(b) { return b ? b.toString() : null; });
 
   console.log('status_code: ', procOut.status);
   
@@ -79,7 +83,7 @@ app.get('/screenshot', function(req, res) {
 
   stdout.map(function(m) { console.log(m); })
   console.log('\n');
-  console.log('stderr: ', procOut.stderr.toString());
+  console.log('stderr: ', (procOut.stderr || '').toString());
 
 
   if (procOut.status === 0) {
@@ -101,7 +105,7 @@ app.get('/screenshot', function(req, res) {
       error: 'child_process_error',
       status: procOut.status,
       stdout: stdout.join('\n'),
-      stderr: procOut.stderr.toString()
+      stderr: (procOut.stderr || '').toString()
     });
     return;
   }
